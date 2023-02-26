@@ -1,20 +1,12 @@
 #Build Steps
-FROM node:alpine3.10 as build-step
-
-RUN mkdir /app
-WORKDIR /app
-
-COPY package.json /app
+FROM node:alpine as builder
+WORKDIR '/app'
+COPY ./package.json ./
 RUN npm install
-RUN cp -r  COPY . /app
-
+COPY . .
 RUN npm run build
 
-RUN chgrp -R root /var/cache/nginx /var/run /var/log/nginx && \
-    chmod -R 770 /var/cache/nginx /var/run /var/log/nginx
-
-#Run Steps
-FROM nginx:1.19.8-alpine  
-COPY --from=build-step /app/build /usr/share/nginx/html
+FROM nginx
 EXPOSE 8080
-CMD ["nginx", "-g", "daemon off;"]
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/build /usr/share/nginx/html
