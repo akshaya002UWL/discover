@@ -1,21 +1,16 @@
-FROM node:10.15.3 as production
-WORKDIR /app
+FROM node:lts
 
-COPY package*.json ./
-RUN npm install && npm install --only=dev
+WORKDIR /usr/src/app
 
-COPY . .
+RUN npm install -g react-scripts
 
-RUN npm run build
+RUN chown -Rh node:node /usr/src/app
+
+USER node
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+#CMD [ "sh", "-c", "npm install && npm run start" ]
 
-
-FROM production as dev
-
-COPY docker/dev-entrypoint.sh /usr/local/bin/
-
-ENTRYPOINT ["dev-entrypoint.sh"]
-CMD ["npm", "run", "watch"]
+#FOR PROD
+ CMD [ "sh", "-c", "npm install && npm run build" ]
