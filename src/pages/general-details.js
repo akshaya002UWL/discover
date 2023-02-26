@@ -7,7 +7,7 @@ const GeneralDetails = () => {
      const [service, setService] = useState();
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8080/test')
+        fetch('https://recruitement-fsw-https-recruitment.cp4ba-mission-16bf47a9dc965a843455de9f2aef2035-0000.eu-de.containers.appdomain.cloud/common-assets')
            .then((response) => response.json())
            .then((data) => {
             console.log(typeof data);
