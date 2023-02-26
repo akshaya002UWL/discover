@@ -9,13 +9,11 @@ COPY . /usr/app
 
 WORKDIR /usr/app
 
-# install and cache app dependencies
-RUN yarn
 
 # add `/usr/src/app/node_modules/.bin` to $PATH
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
-RUN npm run build
+RUN npm install
 
 # Stage 2
 # Copy the react app build above in nginx
