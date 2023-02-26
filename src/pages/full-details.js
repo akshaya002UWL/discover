@@ -66,7 +66,9 @@ const FullDetails = () => {
                                     <td>{op.op_name}</td>
                                     <td>{op.op_parms[0].parm_name}</td> 
                                     <td>{op.op_parms[0].parm_type}</td>
-                                    <td><a  href={connString+item.origin.snapshot.project_name+'/'+item.name+'docs?openAPIVersion=3'} target="_blank">{url}Generate OpenAPI</a></td> 
+                                                          <td><button  class="btn-blockbtn btn-outline-danger" onClick={()=>{
+                           openModal(item)}}>Generate OpenAPI</button></td> 
+//                                     <td><a  href={connString+item.origin.snapshot.project_name+'/'+item.name+'docs?openAPIVersion=3'} target="_blank">{url}Generate OpenAPI</a></td> 
                                       </tr>
                                       );
                                     })
