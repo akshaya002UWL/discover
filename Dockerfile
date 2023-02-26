@@ -1,16 +1,20 @@
-FROM node:lts
+#Build Steps
+FROM node:12.2.0-alpine as build
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-RUN npm install 
+COPY . /app/
 
-RUN chown -Rh node:node /usr/src/app
+RUN npm install
+RUN npm install react-scripts@5.0.1 -g --silent
 
-USER node
+RUN npm run build
 
-EXPOSE 3000
+#Run Steps
+FROM nginx:1.19.8-alpine  
+COPY --from=build /app/build /usr/share/nginx/html
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx/nginx.conf /etc/nginx/conf.d
 
-#CMD [ "sh", "-c", "npm install && npm run start" ]
-
-#FOR PROD
- CMD [ "sh", "-c", "npm install && npm run build" ]
+EXPOSE 8080
+CMD ["nginx", "-g", "daemon off;"]
